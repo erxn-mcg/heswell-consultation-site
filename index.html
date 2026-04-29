@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New Homes in Heswall – Leverhulme Consultation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ─── CSS Variables ───────────────────────────────────────── */
+    :root {
+      --c-dark:       #1a1a2e;
+      --c-green:      #265541;
+      --c-green-mid:  #2f6a52;
+      --c-primary-bg: #f0f2ee;
+      --c-yellow:     #55263A;
+      --c-amber:      #6b3049;
+      --c-orange:     #7a3a55;
+      --c-teal:       #4f615f;
+      --c-white:      #ffffff;
+      --c-text:       #092b32;
+      --f-body:       'Montserrat', sans-serif;
+      --f-head:       'Playfair Display', serif;
+    }
+
+    /* ─── Reset & Base ────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--f-body);
+      color: var(--c-text);
+      background: var(--c-white);
+      line-height: 1.7;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Typography ──────────────────────────────────────────── */
+    h1 {
+      font-family: var(--f-body);
+      font-weight: 500;
+      font-size: clamp(1.4rem, 3vw, 2.1rem);
+      letter-spacing: 14px;
+      text-transform: uppercase;
+      line-height: 1.3;
+    }
+    h2 {
+      font-family: var(--f-head);
+      font-weight: 300;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      line-height: 1.2;
+    }
+    h3 {
+      font-family: var(--f-body);
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    p { font-size: 1rem; line-height: 1.8; }
+
+    /* ─── Header ──────────────────────────────────────────────── */
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+      padding: 0 2rem;
+    }
+    .site-header.transparent { background: transparent; }
+    .site-header.scrolled {
+      background: var(--c-green);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+    }
+    .site-header__inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80px;
+    }
+    .site-logo {
+      display: flex;
+      align-items: center;
+    }
+    .site-logo .logo-img {
+      height: 58px;
+      width: auto;
+      /* mix-blend-mode: screen removes the black background on dark headers */
+      mix-blend-mode: screen;
+      /* Slight brightness boost so it pops on the transparent hero too */
+      filter: brightness(1.05);
+      transition: opacity 0.3s;
+    }
+    /* Fallback text shown when image fails to load */
+    .site-logo .logo-fallback {
+      display: none;
+      color: var(--c-white);
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .site-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+    .site-nav a {
+      color: var(--c-white);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      opacity: 0.9;
+    }
+    .site-nav a:hover { color: rgba(255,255,255,1); opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+
+    .nav-cta {
+      background: var(--c-yellow);
+      color: #ffffff !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      font-weight: 700 !important;
+      opacity: 1 !important;
+      text-decoration: none !important;
+    }
+    .nav-cta:hover { background: var(--c-amber) !important; color: #ffffff !important; text-decoration: none !important; }
+
+    /* Hamburger */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 5px;
+      padding: 4px;
+    }
+    .menu-toggle span {
+      display: block;
+      width: 25px;
+      height: 2px;
+      background: var(--c-white);
+      transition: all 0.3s;
+    }
+
+    /* ─── Hero ────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 8vw;
+      overflow: hidden;
+      background: var(--c-green);
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom,
+          rgba(9,43,50,0.1) 0%,
+          rgba(9,43,50,0.2) 40%,
+          rgba(9,43,50,0.85) 100%),
+        /* SVG placeholder landscape */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 900'%3E%3Crect fill='%23265541' width='1440' height='900'/%3E%3Cellipse cx='720' cy='500' rx='900' ry='350' fill='%232f6a52'/%3E%3Cellipse cx='200' cy='600' rx='400' ry='200' fill='%231d4434'/%3E%3Cellipse cx='1200' cy='620' rx='350' ry='180' fill='%231d4434'/%3E%3Ccircle cx='100' cy='400' r='120' fill='%23346050'/%3E%3Ccircle cx='1350' cy='350' r='100' fill='%23346050'/%3E%3Cellipse cx='720' cy='380' rx='500' ry='150' fill='%233a7060' opacity='0.5'/%3E%3Crect y='700' x='0' width='1440' height='200' fill='%231a3a2a'/%3E%3C/svg%3E") center/cover no-repeat;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      color: var(--c-white);
+    }
+    .hero-eyebrow {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      color: var(--c-white);
+      margin-bottom: 1.5rem;
+      max-width: 800px;
+      letter-spacing: 10px;
+    }
+    .hero h1 span {
+      display: block;
+      font-family: var(--f-head);
+      font-weight: 300;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      letter-spacing: 2px;
+      text-transform: none;
+      color: #ffffff;
+    }
+    .hero-desc {
+      max-width: 600px;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 2.5rem;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      padding: 0.85rem 2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.25s;
+    }
+    .btn-primary {
+      background: var(--c-yellow);
+      color: #ffffff;
+      border-color: var(--c-yellow);
+    }
+    .btn-primary:hover {
+      background: var(--c-amber);
+      border-color: var(--c-amber);
+      color: #ffffff;
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--c-white);
+      border-color: var(--c-white);
+    }
+    .btn-outline:hover {
+      background: var(--c-white);
+      color: var(--c-green);
+    }
+
+    /* ─── Stats Bar ───────────────────────────────────────────── */
+    .stats-bar {
+      background: var(--c-yellow);
+      padding: 2.5rem 2rem;
+    }
+    .stats-bar__inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: var(--f-head);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1;
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.82);
+      margin-top: 0.4rem;
+    }
+
+    /* ─── Section Wrapper ─────────────────────────────────────── */
+    .section { padding: 6rem 2rem; }
+    .section__inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .section--dark {
+      background: var(--c-green);
+      color: var(--c-white);
+    }
+    .section--light { background: var(--c-primary-bg); }
+    .section--white { background: var(--c-white); }
+    .section--teal {
+      background: var(--c-dark);
+      color: var(--c-white);
+    }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--c-amber);   /* burgundy on light bg – good contrast */
+      margin-bottom: 0.8rem;
+    }
+    .section--dark .section-label { color: rgba(255,255,255,0.7); }
+    .section-divider {
+      width: 60px;
+      height: 3px;
+      background: var(--c-yellow);
+      margin: 1.2rem 0 2rem;
+    }
+    .section--dark .section-divider { background: rgba(255,255,255,0.35); }
+
+    /* ─── Two-column layout ───────────────────────────────────── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .two-col.reverse { direction: rtl; }
+    .two-col.reverse > * { direction: ltr; }
+    .col-image {
+      border-radius: 4px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+    .col-image svg { width: 100%; height: 100%; }
+
+    /* ─── Welcome Section ─────────────────────────────────────── */
+    .welcome-text { font-size: 1.15rem; max-width: 720px; }
+
+    /* ─── Feature Cards ───────────────────────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .feature-card {
+      background: var(--c-white);
+      border-radius: 4px;
+      padding: 2.5rem;
+      border-left: 4px solid var(--c-yellow);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+    .feature-number {
+      font-family: var(--f-head);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--c-yellow);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .feature-card h3 { margin-bottom: 1rem; color: var(--c-green); }
+    .feature-card p { font-size: 0.95rem; color: var(--c-teal); }
+
+    /* ─── Vision section image placeholder ───────────────────── */
+    .masterplan-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 3rem;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+    }
+
+    /* ─── About Leverhulme ────────────────────────────────────── */
+    .lev-logo-box {
+      background: var(--c-yellow);
+      padding: 2.5rem;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 4/3;
+    }
+    .lev-logo-text {
+      font-family: var(--f-head);
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #ffffff;
+      text-align: center;
+      line-height: 1.2;
+    }
+    .lev-logo-text span {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      margin-top: 0.5rem;
+    }
+
+    /* ─── Feedback Form ───────────────────────────────────────── */
+    .form-section {
+      background: var(--c-green);
+      padding: 6rem 2rem;
+    }
+    .form-section__inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .form-section .section-label { color: rgba(255,255,255,0.7); }
+    .form-section h2 { color: #ffffff; }
+    .form-section > .form-section__inner > p { color: rgba(255,255,255,0.85); margin-top: 0.5rem; }
+    .form-section .section-divider { background: rgba(255,255,255,0.3); }
+
+    /* Privacy banner */
+    .privacy-banner {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.85);
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .privacy-banner svg { flex-shrink: 0; margin-top: 2px; }
+    .privacy-banner strong { color: #ffffff; }
+
+    /* Question cards */
+    .q-card {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 2rem 2.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .q-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .q-num {
+      background: var(--c-green);
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .q-text {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--c-dark);
+      line-height: 1.5;
+    }
+    .q-hint {
+      display: block;
+      font-weight: 400;
+      font-size: 0.82rem;
+      color: var(--c-teal);
+      margin-top: 0.3rem;
+    }
+
+    /* Pill-style yes/no/unsure buttons */
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+    .pill-label {
+      position: relative;
+      cursor: pointer;
+    }
+    .pill-label input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .pill-face {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1.4rem;
+      border-radius: 50px;
+      border: 2px solid #d0d9d4;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--c-teal);
+      background: #f8faf8;
+      transition: all 0.18s;
+      user-select: none;
+    }
+    .pill-label input:checked + .pill-face {
+      background: var(--c-green);
+      border-color: var(--c-green);
+      color: #ffffff;
+    }
+    .pill-label:hover .pill-face {
+      border-color: var(--c-green);
+      color: var(--c-green);
+    }
+    .pill-label input:checked + .pill-face::before {
+      content: '✓ ';
+      font-size: 0.8rem;
+    }
+
+    /* Checkbox tile group */
+    .tile-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.6rem;
+    }
+    .tile-label {
+      position: relative;
+      cursor: pointer;
+    }
+    .tile-label input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .tile-face {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      border: 2px solid #d0d9d4;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--c-teal);
+      background: #f8faf8;
+      transition: all 0.18s;
+      min-height: 48px;
+    }
+    .tile-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: 2px solid #c0ccc7;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      transition: all 0.18s;
+    }
+    .tile-label input:checked + .tile-face {
+      background: #edf4f0;
+      border-color: var(--c-green);
+      color: var(--c-dark);
+    }
+    .tile-label input:checked + .tile-face .tile-check {
+      background: var(--c-green);
+      border-color: var(--c-green);
+      color: white;
+    }
+    .tile-label input:checked + .tile-face .tile-check::after { content: '✓'; }
+    .tile-label:hover .tile-face { border-color: var(--c-green); }
+
+    /* Importance matrix */
+    .matrix-table { width: 100%; border-collapse: collapse; }
+    .matrix-table th {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--c-teal);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0.5rem 0.75rem;
+      text-align: center;
+      border-bottom: 2px solid #e8ede9;
+    }
+    .matrix-table th:first-child { text-align: left; }
+    .matrix-table td {
+      padding: 0.65rem 0.75rem;
+      border-bottom: 1px solid #f0f3f1;
+      font-size: 0.9rem;
+      color: var(--c-dark);
+    }
+    .matrix-table td:not(:first-child) { text-align: center; }
+    .matrix-table tr:last-child td { border-bottom: none; }
+    .matrix-table tr:hover td { background: #f8faf8; }
+    .mat-radio { position: relative; cursor: pointer; }
+    .mat-radio input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .mat-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #c0ccc7;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.18s;
+    }
+    .mat-radio input:checked + .mat-dot {
+      border-color: var(--c-green);
+      background: var(--c-green);
+    }
+    .mat-radio input:checked + .mat-dot::after {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: white;
+    }
+    .mat-radio:hover .mat-dot { border-color: var(--c-green); }
+
+    /* Rating scale */
+    .rating-scale {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.25rem;
+    }
+    .rate-label { position: relative; cursor: pointer; }
+    .rate-label input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .rate-face {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid #d0d9d4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--c-teal);
+      background: #f8faf8;
+      transition: all 0.18s;
+    }
+    .rate-label input:checked + .rate-face {
+      background: var(--c-green);
+      border-color: var(--c-green);
+      color: white;
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(38,85,65,0.3);
+    }
+    .rate-label:hover .rate-face { border-color: var(--c-green); color: var(--c-green); }
+    .rating-legend {
+      display: flex;
+      justify-content: space-between;
+      max-width: 320px;
+      font-size: 0.75rem;
+      color: var(--c-teal);
+      margin-top: 0.5rem;
+    }
+
+    /* Textarea & text inputs */
+    .q-card textarea,
+    .q-card input[type="text"],
+    .q-card input[type="email"],
+    .q-card input[type="tel"] {
+      width: 100%;
+      padding: 0.85rem 1.1rem;
+      border: 2px solid #d0d9d4;
+      border-radius: 8px;
+      font-family: var(--f-body);
+      font-size: 0.95rem;
+      color: var(--c-dark);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #f8faf8;
+      margin-top: 0.25rem;
+    }
+    .q-card textarea:focus,
+    .q-card input:focus {
+      outline: none;
+      border-color: var(--c-green);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(38,85,65,0.12);
+    }
+    .q-card textarea { min-height: 110px; resize: vertical; }
+
+    /* Contact details section */
+    .contact-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      padding: 2rem 2.5rem;
+      margin-top: 1rem;
+    }
+    .contact-card-title {
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .contact-card-title span {
+      font-weight: 400;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.78rem;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .contact-field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.5px;
+    }
+    .contact-field input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      color: #ffffff;
+      font-family: var(--f-body);
+      font-size: 0.9rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .contact-field input::placeholder { color: rgba(255,255,255,0.4); }
+    .contact-field input:focus {
+      outline: none;
+      border-color: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.15);
+    }
+
+    /* Submit bar */
+    .submit-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.15);
+    }
+    .submit-note {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.6;
+    }
+    .submit-note strong { color: #ffffff; }
+    .btn-submit {
+      background: var(--c-yellow);
+      color: #ffffff;
+      border: none;
+      padding: 1rem 2.8rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+    .btn-submit:hover { background: var(--c-amber); transform: translateY(-1px); }
+    .btn-submit:active { transform: translateY(0); }
+
+    /* ─── Footer ──────────────────────────────────────────────── */
+    .site-footer {
+      background: var(--c-dark);
+      color: rgba(255,255,255,0.7);
+      padding: 4rem 2rem 2rem;
+    }
+    .site-footer__inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 4rem;
+    }
+    .footer-brand .logo-mark {
+      width: 52px;
+      height: 52px;
+      background: var(--c-yellow);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.7rem;
+      color: var(--c-green);
+      text-align: center;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .footer-brand p { font-size: 0.9rem; max-width: 340px; line-height: 1.7; }
+    .footer-col h4 {
+      color: var(--c-white);
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul a {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: rgba(255,255,255,1); }
+    .footer-bottom {
+      max-width: 1280px;
+      margin: 3rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.8rem;
+    }
+
+    /* ─── Success Message ─────────────────────────────────────── */
+    .success-msg {
+      display: none;
+      background: var(--c-green);
+      color: var(--c-white);
+      padding: 2rem;
+      border-radius: 4px;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .success-msg h3 { color: #ffffff; margin-bottom: 0.5rem; }
+
+    /* ─── Scroll indicator ────────────────────────────────────── */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+    .scroll-indicator svg { margin: 0 auto 0.3rem; display: block; }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ─── Responsive — Tablet (≤900px) ──────────────────────── */
+    @media (max-width: 900px) {
+      /* Layout */
+      .two-col,
+      .two-col.reverse { grid-template-columns: 1fr; direction: ltr; gap: 2.5rem; }
+      .features-grid   { grid-template-columns: 1fr; }
+      .stats-bar__inner { grid-template-columns: repeat(3,1fr); }
+      .site-footer__inner { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+      .form-two-col    { grid-template-columns: 1fr; }
+
+      /* Nav — hamburger */
+      .site-nav { display: none; position: relative; }
+      .site-nav.open { display: block; }
+      .menu-toggle { display: flex; }
+      .site-nav ul {
+        flex-direction: column;
+        position: absolute;
+        top: 80px;
+        left: -2rem; right: -2rem;
+        background: var(--c-green);
+        padding: 1rem 2rem 1.5rem;
+        gap: 0;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      }
+      .site-nav ul li { border-bottom: 1px solid rgba(255,255,255,0.1); }
+      .site-nav ul li:last-child { border-bottom: none; }
+      .site-nav a {
+        display: block;
+        padding: 0.85rem 0;
+        font-size: 0.9rem;
+      }
+      .nav-cta {
+        margin-top: 0.5rem;
+        display: inline-block;
+        padding: 0.6rem 1.5rem !important;
+        border-radius: 50px;
+      }
+
+      /* Typography */
+      h1 { letter-spacing: 4px; }
+      h2 { font-size: clamp(1.6rem, 4vw, 2.2rem) !important; }
+
+      /* Sections */
+      .section { padding: 4rem 1.5rem; }
+      .form-section { padding: 4rem 1.5rem; }
+      .stats-bar { padding: 2rem 1.5rem; }
+
+      /* Hero */
+      .hero { padding-bottom: 6rem; }
+      .hero-content { padding: 0 1.5rem; }
+
+      /* Columns — image on mobile shows below text */
+      .two-col.reverse .col-text { order: -1; }
+    }
+
+    /* ─── Responsive — Mobile (≤600px) ──────────────────────── */
+    @media (max-width: 600px) {
+      /* Nav */
+      .site-nav ul { left: -1.5rem; right: -1.5rem; }
+      .site-header { padding: 0 1.5rem; }
+
+      /* Hero */
+      .hero { padding-bottom: 5rem; min-height: 100svh; }
+      .hero-content { padding: 0 1.5rem; }
+      .hero h1 { letter-spacing: 3px; font-size: clamp(1.2rem, 5vw, 1.6rem) !important; }
+      .hero h1 span { font-size: clamp(1.6rem, 7vw, 2.4rem) !important; letter-spacing: 1px; }
+      .hero-btns { flex-direction: column; align-items: stretch; }
+      .hero-btns .btn { text-align: center; }
+      .scroll-indicator { display: none; }
+
+      /* Stats */
+      .stats-bar__inner { grid-template-columns: 1fr; gap: 1.5rem; }
+      .stat-item { padding: 0.5rem 0; }
+      .stats-bar { padding: 2.5rem 1.5rem; }
+
+      /* Sections */
+      .section { padding: 3.5rem 1.25rem; }
+      .form-section { padding: 3.5rem 1.25rem; }
+      .welcome-text { font-size: 1rem; }
+
+      /* Features */
+      .feature-card { padding: 1.75rem 1.5rem; }
+      .feature-number { font-size: 2.5rem; }
+
+      /* Leverhulme box */
+      .lev-logo-box { aspect-ratio: auto; padding: 2.5rem 1.5rem; }
+      .lev-logo-text { font-size: 2rem; }
+
+      /* Two-col gap */
+      .two-col { gap: 2rem; }
+
+      /* Form */
+      .q-card { padding: 1.5rem 1.25rem; }
+      .contact-card { padding: 1.5rem 1.25rem; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .tile-group { grid-template-columns: 1fr 1fr; }
+      .submit-bar { flex-direction: column; align-items: stretch; }
+      .btn-submit { text-align: center; width: 100%; }
+
+      /* Footer */
+      .site-footer__inner { grid-template-columns: 1fr; gap: 2rem; }
+      .site-footer { padding: 3rem 1.5rem 1.5rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+
+      /* Buttons */
+      .btn { font-size: 0.8rem; padding: 0.8rem 1.5rem; }
+    }
+
+    /* ─── Responsive — Small mobile (≤380px) ─────────────────── */
+    @media (max-width: 380px) {
+      .site-logo .logo-img { height: 44px; }
+      h2 { font-size: 1.5rem !important; }
+      .feature-card { padding: 1.25rem 1rem; }
+      .form-box { padding: 1.25rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HEADER ───────────────────────────────────────────────── -->
+  <header class="site-header transparent" id="site-header">
+    <div class="site-header__inner">
+      <div class="site-logo">
+        <img
+          class="logo-img"
+          src="leverhulme-logo.png"
+          alt="Leverhulme"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
+        >
+        <span class="logo-fallback">Leverhulme</span>
+      </div>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav" id="site-nav">
+        <ul>
+          <li><a href="#about">The Site</a></li>
+          <li><a href="#vision">Our Vision</a></li>
+          <li><a href="#features">Key Features</a></li>
+          <li><a href="#leverhulme">About Us</a></li>
+          <li><a href="#feedback" class="nav-cta">Have Your Say</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── HERO ─────────────────────────────────────────────────── -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Leverhulme — Heswall Consultation</p>
+      <h1>
+        Have Your Say<br>
+        <span>New Homes in Heswall</span>
+      </h1>
+      <p class="hero-desc">
+        Our proposals for land at Milner Road will help meet the local demand for new homes in Heswall — providing a mix of family and affordable housing in a well-connected parkland setting.
+      </p>
+      <div class="hero-btns">
+        <a href="#feedback" class="btn btn-primary">Give Your Feedback</a>
+        <a href="#about" class="btn btn-outline">Learn More</a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M10 3v14M4 11l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Scroll
+    </div>
+  </section>
+
+  <!-- ── STATS BAR ─────────────────────────────────────────────── -->
+  <div class="stats-bar">
+    <div class="stats-bar__inner">
+      <div class="stat-item">
+        <span class="stat-number">164</span>
+        <span class="stat-label">High-quality new homes</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">58</span>
+        <span class="stat-label">Affordable homes</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">3.9ha</span>
+        <span class="stat-label">Dedicated green infrastructure</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WELCOME ───────────────────────────────────────────────── -->
+  <section class="section section--white" id="welcome">
+    <div class="section__inner">
+      <p class="section-label">Welcome</p>
+      <h2>A New Community for Heswall</h2>
+      <div class="section-divider"></div>
+      <p class="welcome-text">
+        Welcome to our Consultation Website. Our proposals for land at Milner Road will help to meet the local demand for new homes in Heswall. The development will provide a mix of family housing and affordable homes in a highly-accessible, well-connected parkland setting – providing access to new areas of green space for new and existing residents alike.
+      </p>
+      <br>
+      <p class="welcome-text">
+        The development will provide more choice for local people and contribute towards addressing a growing housing shortage. It will create new opportunities for people to stay in and move to Heswall. <strong>We would like to hear your views</strong> – which will inform the planning application to be submitted to Wirral Council.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── ABOUT THE SITE ────────────────────────────────────────── -->
+  <section class="section section--light" id="about">
+    <div class="section__inner">
+      <div class="two-col">
+        <div class="col-text">
+          <p class="section-label">The Heswall Site</p>
+          <h2>About the Site</h2>
+          <div class="section-divider"></div>
+          <p>
+            The site is located to the north of Milner Road, between Barnston Road and Whitfield Lane, Heswall. It is situated less than 500 metres from Heswall rail station and around 1km from the shops, supermarkets and services at the heart of Heswall.
+          </p>
+          <br>
+          <p>
+            This site has been selected as it meets the Government's grey belt planning requirements alongside enabling the provision of well-connected new homes that integrate into the existing landscape and townscape of Heswall.
+          </p>
+          <br>
+          <a href="#feedback" class="btn btn-primary" style="display:inline-block;margin-top:1rem;">Have Your Say</a>
+        </div>
+        <div>
+          <!-- Map placeholder -->
+          <div class="col-image" style="background:#d8e8d4;position:relative;">
+            <svg viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+              <rect fill="#e6edea" width="600" height="450"/>
+              <!-- Roads -->
+              <line x1="0" y1="225" x2="600" y2="225" stroke="#c0cac5" stroke-width="8"/>
+              <line x1="300" y1="0" x2="300" y2="450" stroke="#c0cac5" stroke-width="6"/>
+              <line x1="0" y1="150" x2="600" y2="300" stroke="#c0cac5" stroke-width="4"/>
+              <!-- Site outline -->
+              <polygon points="220,160 380,140 400,280 230,300" fill="#265541" opacity="0.25" stroke="#265541" stroke-width="2"/>
+              <!-- Station marker -->
+              <circle cx="180" cy="320" r="14" fill="#265541"/>
+              <text x="180" y="325" text-anchor="middle" fill="white" font-size="10" font-weight="bold">🚉</text>
+              <text x="180" y="346" text-anchor="middle" fill="#265541" font-size="10" font-weight="bold">Heswall Station</text>
+              <!-- Site label -->
+              <text x="310" y="225" text-anchor="middle" fill="#265541" font-size="12" font-weight="bold">SITE</text>
+              <text x="310" y="242" text-anchor="middle" fill="#265541" font-size="10">Milner Road</text>
+              <!-- Compass -->
+              <circle cx="545" cy="60" r="22" fill="white" stroke="#ccc" stroke-width="1"/>
+              <text x="545" y="66" text-anchor="middle" fill="#265541" font-weight="bold" font-size="14">N</text>
+              <polygon points="545,40 540,60 545,55 550,60" fill="#265541"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── VISION ────────────────────────────────────────────────── -->
+  <section class="section section--dark" id="vision">
+    <div class="section__inner">
+      <p class="section-label">Our Vision</p>
+      <h2 style="color:var(--c-white);">A Thriving, Multi-Generational Community</h2>
+      <div class="section-divider"></div>
+      <p style="max-width:760px;font-size:1.1rem;color:rgba(255,255,255,0.88);">
+        Our vision is to provide high quality sustainable new homes and integrate an attractive, thriving, multi-generational community into Heswall. We will seek to achieve this by blending a range of energy-efficient homes with accessible green space, safe active travel routes and strong connections to the wider community and countryside.
+      </p>
+      <!-- Masterplan placeholder -->
+      <div class="masterplan-img" style="background:#2f6a52;">
+        <svg viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+          <rect fill="#2f6a52" width="1200" height="675"/>
+          <!-- Green spaces -->
+          <ellipse cx="200" cy="400" rx="150" ry="100" fill="#3a7a60" opacity="0.6"/>
+          <ellipse cx="1000" cy="300" rx="120" ry="80" fill="#3a7a60" opacity="0.6"/>
+          <rect x="400" y="100" width="400" height="475" rx="20" fill="#346050" opacity="0.4"/>
+          <!-- Roads grid -->
+          <line x1="400" y1="100" x2="400" y2="575" stroke="#eceee6" stroke-width="10" opacity="0.6"/>
+          <line x1="800" y1="100" x2="800" y2="575" stroke="#eceee6" stroke-width="10" opacity="0.6"/>
+          <line x1="400" y1="337" x2="800" y2="337" stroke="#eceee6" stroke-width="8" opacity="0.6"/>
+          <line x1="400" y1="200" x2="800" y2="200" stroke="#eceee6" stroke-width="5" opacity="0.4"/>
+          <line x1="400" y1="475" x2="800" y2="475" stroke="#eceee6" stroke-width="5" opacity="0.4"/>
+          <!-- Housing blocks -->
+          <rect x="420" y="120" width="80" height="60" rx="4" fill="#55263A" opacity="0.8"/>
+          <rect x="520" y="120" width="80" height="60" rx="4" fill="#55263A" opacity="0.8"/>
+          <rect x="620" y="120" width="80" height="60" rx="4" fill="#55263A" opacity="0.8"/>
+          <rect x="720" y="120" width="60" height="60" rx="4" fill="#55263A" opacity="0.8"/>
+          <rect x="420" y="220" width="80" height="95" rx="4" fill="#6b3049" opacity="0.8"/>
+          <rect x="520" y="220" width="80" height="95" rx="4" fill="#6b3049" opacity="0.8"/>
+          <rect x="620" y="220" width="80" height="95" rx="4" fill="#6b3049" opacity="0.8"/>
+          <rect x="720" y="220" width="60" height="95" rx="4" fill="#6b3049" opacity="0.8"/>
+          <rect x="420" y="355" width="80" height="95" rx="4" fill="#6b3049" opacity="0.8"/>
+          <rect x="520" y="355" width="80" height="95" rx="4" fill="#6b3049" opacity="0.8"/>
+          <rect x="620" y="355" width="80" height="95" rx="4" fill="#55263A" opacity="0.8"/>
+          <rect x="720" y="355" width="60" height="95" rx="4" fill="#55263A" opacity="0.8"/>
+          <rect x="420" y="490" width="80" height="70" rx="4" fill="#6b3049" opacity="0.8"/>
+          <rect x="520" y="490" width="80" height="70" rx="4" fill="#6b3049" opacity="0.8"/>
+          <rect x="620" y="490" width="80" height="70" rx="4" fill="#6b3049" opacity="0.8"/>
+          <rect x="720" y="490" width="60" height="70" rx="4" fill="#55263A" opacity="0.8"/>
+          <!-- Cycleway -->
+          <path d="M 100 337 Q 250 337 400 337 Q 600 337 800 337 Q 1000 300 1100 250" stroke="#7a3a55" stroke-width="4" fill="none" stroke-dasharray="10,5"/>
+          <!-- Label -->
+          <text x="600" y="650" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="14" font-family="sans-serif">Draft Masterplan — Milner Road, Heswall (Subject to Change)</text>
+          <!-- Legend -->
+          <rect x="30" y="30" width="14" height="14" fill="#55263A"/>
+          <text x="50" y="42" fill="white" font-size="12" font-family="sans-serif">Market Housing</text>
+          <rect x="30" y="55" width="14" height="14" fill="#6b3049"/>
+          <text x="50" y="67" fill="white" font-size="12" font-family="sans-serif">Affordable Housing</text>
+          <line x1="30" y1="82" x2="44" y2="82" stroke="#7a3a55" stroke-width="3" stroke-dasharray="4,2"/>
+          <text x="50" y="87" fill="white" font-size="12" font-family="sans-serif">Cycleway</text>
+          <rect x="30" y="97" width="14" height="14" fill="#3a7a60" opacity="0.8"/>
+          <text x="50" y="110" fill="white" font-size="12" font-family="sans-serif">Green Space</text>
+        </svg>
+      </div>
+      <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin-top:0.75rem;text-align:center;">
+        Illustrative masterplan — for indicative purposes only, subject to change.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── KEY FEATURES ──────────────────────────────────────────── -->
+  <section class="section section--white" id="features">
+    <div class="section__inner">
+      <p class="section-label">Key Features of the Proposal</p>
+      <h2>What We Are Proposing</h2>
+      <div class="section-divider"></div>
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-number">01</div>
+          <h3>A Diverse Housing Mix</h3>
+          <p>
+            We are proposing 164 total dwellings with a mix designed to cater to all stages of life — including 1 &amp; 2-bed flats (max 2.5 storeys), 3-bed houses and 4-bed houses. This variety ensures wide choice for people renting, first-time buyers, growing families, single people, smaller households, retired people and workers.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-number">02</div>
+          <h3>Future-Proofed Homes</h3>
+          <p>
+            We are committed to the provision of sensitively-designed, high quality sustainable homes. All homes will be low-carbon, energy-efficient and designed for long-term value. The construction phase will provide local employment, boost the local economy and ensure a skilled workforce for years to come.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-number">03</div>
+          <h3>Greenery, Space &amp; Biodiversity</h3>
+          <p>
+            3.9 hectares of dedicated green infrastructure lies at the heart of our proposals. We will transform private land into a new parkland community, featuring new footpaths and a dedicated cycleway to the local school, supporting biodiversity net gain and sustainable drainage throughout.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-number">04</div>
+          <h3>Access, Transport &amp; Connectivity</h3>
+          <p>
+            The site's sustainable location — less than 500m from Heswall rail station — enables masterplanners to prioritise active travel. Safe, accessible routes for pedestrians and cyclists connect to the public rights of way network, local shops and services, and the wider Wirral countryside.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT LEVERHULME ──────────────────────────────────────── -->
+  <section class="section section--light" id="leverhulme">
+    <div class="section__inner">
+      <div class="two-col reverse">
+        <div class="col-text">
+          <p class="section-label">About Leverhulme</p>
+          <h2>Over 130 Years of Wirral Life</h2>
+          <div class="section-divider"></div>
+          <p>
+            Leverhulme has been part of the fabric of Wirral life for over 130 years. The 1st Viscount Leverhulme had the vision for Port Sunlight — to this day still used as an example of model village excellence.
+          </p>
+          <br>
+          <p>
+            Today's Leverhulme encompasses diverse places hosting farms, homes, commercial operations, communities and more. Leverhulme aims to create and sustain environments where people can live happy, healthy and fulfilled lives.
+          </p>
+        </div>
+        <div class="lev-logo-box">
+          <div class="lev-logo-text">
+            Leverhulme
+            <span>Est. Wirral · Est. 1888</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEEDBACK FORM ─────────────────────────────────────────── -->
+  <section class="form-section" id="feedback">
+    <div class="form-section__inner">
+
+      <p class="section-label">Have Your Say</p>
+      <h2>Feedback Form</h2>
+      <div class="section-divider"></div>
+      <p>We want to hear from you. Your feedback will directly inform the planning application to be submitted to Wirral Council. Please complete the form below by <strong style="color:#fff;">1 June 2026</strong>.</p>
+
+      <!-- Privacy notice -->
+      <div class="privacy-banner" style="margin-top:2rem;">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 2L3 5v5c0 4.4 3 8.5 7 9.5 4-1 7-5.1 7-9.5V5l-7-3z" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M7 10l2 2 4-4" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span><strong>Privacy:</strong> This consultation is managed by Leverhulme. Personal data is used solely for this consultation and held securely under UK GDPR. It will not be shared with third parties without your consent.</span>
+      </div>
+
+      <form id="feedback-form" novalidate style="margin-top:1.5rem;">
+
+        <!-- Q1 -->
+        <div class="q-card">
+          <div class="q-header">
+            <div class="q-num">1</div>
+            <div class="q-text">Do you agree that more houses are needed in the area?</div>
+          </div>
+          <div class="pill-group">
+            <label class="pill-label"><input type="radio" name="q1" value="yes"><span class="pill-face">Yes</span></label>
+            <label class="pill-label"><input type="radio" name="q1" value="no"><span class="pill-face">No</span></label>
+            <label class="pill-label"><input type="radio" name="q1" value="unsure"><span class="pill-face">Unsure</span></label>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="q-card">
+          <div class="q-header">
+            <div class="q-num">2</div>
+            <div class="q-text">Do you agree that grey belt development provides a sustainable solution for meeting Wirral's housing needs?</div>
+          </div>
+          <div class="pill-group">
+            <label class="pill-label"><input type="radio" name="q2" value="yes"><span class="pill-face">Yes</span></label>
+            <label class="pill-label"><input type="radio" name="q2" value="no"><span class="pill-face">No</span></label>
+            <label class="pill-label"><input type="radio" name="q2" value="unsure"><span class="pill-face">Unsure</span></label>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="q-card">
+          <div class="q-header">
+            <div class="q-num">3</div>
+            <div class="q-text">
+              Where homes are built, how important are the following to you?
+              <span class="q-hint">Select one option per row</span>
+            </div>
+          </div>
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Important</th>
+                <th>Not Important</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Good design</td>
+                <td><label class="mat-radio"><input type="radio" name="q3a" value="important"><span class="mat-dot"></span></label></td>
+                <td><label class="mat-radio"><input type="radio" name="q3a" value="not-important"><span class="mat-dot"></span></label></td>
+              </tr>
+              <tr>
+                <td>New accessible green space</td>
+                <td><label class="mat-radio"><input type="radio" name="q3b" value="important"><span class="mat-dot"></span></label></td>
+                <td><label class="mat-radio"><input type="radio" name="q3b" value="not-important"><span class="mat-dot"></span></label></td>
+              </tr>
+              <tr>
+                <td>Accessibility to public transport</td>
+                <td><label class="mat-radio"><input type="radio" name="q3c" value="important"><span class="mat-dot"></span></label></td>
+                <td><label class="mat-radio"><input type="radio" name="q3c" value="not-important"><span class="mat-dot"></span></label></td>
+              </tr>
+              <tr>
+                <td>Contribution to local economy</td>
+                <td><label class="mat-radio"><input type="radio" name="q3d" value="important"><span class="mat-dot"></span></label></td>
+                <td><label class="mat-radio"><input type="radio" name="q3d" value="not-important"><span class="mat-dot"></span></label></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Q4 -->
+        <div class="q-card">
+          <div class="q-header">
+            <div class="q-num">4</div>
+            <div class="q-text">
+              Which elements of this proposal do you think are beneficial to Heswall?
+              <span class="q-hint">Tick as many as apply</span>
+            </div>
+          </div>
+          <div class="tile-group">
+            <label class="tile-label"><input type="checkbox" name="q4" value="affordable"><span class="tile-face"><span class="tile-check"></span>Affordable housing</span></label>
+            <label class="tile-label"><input type="checkbox" name="q4" value="family"><span class="tile-face"><span class="tile-check"></span>Homes for families</span></label>
+            <label class="tile-label"><input type="checkbox" name="q4" value="single"><span class="tile-face"><span class="tile-check"></span>Homes for single people</span></label>
+            <label class="tile-label"><input type="checkbox" name="q4" value="ftb"><span class="tile-face"><span class="tile-check"></span>First time buyers</span></label>
+            <label class="tile-label"><input type="checkbox" name="q4" value="green"><span class="tile-face"><span class="tile-check"></span>New green spaces</span></label>
+            <label class="tile-label"><input type="checkbox" name="q4" value="biodiversity"><span class="tile-face"><span class="tile-check"></span>Biodiversity gains</span></label>
+            <label class="tile-label"><input type="checkbox" name="q4" value="walking"><span class="tile-face"><span class="tile-check"></span>Walking &amp; cycling routes</span></label>
+            <label class="tile-label"><input type="checkbox" name="q4" value="none"><span class="tile-face"><span class="tile-check"></span>None of the above</span></label>
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="q-card">
+          <div class="q-header">
+            <div class="q-num">5</div>
+            <div class="q-text">
+              Overall, what are your thoughts about this proposal?
+              <span class="q-hint">Select a rating from 1 (very negative) to 5 (very positive)</span>
+            </div>
+          </div>
+          <div class="rating-scale">
+            <label class="rate-label"><input type="radio" name="q5" value="1"><span class="rate-face">1</span></label>
+            <label class="rate-label"><input type="radio" name="q5" value="2"><span class="rate-face">2</span></label>
+            <label class="rate-label"><input type="radio" name="q5" value="3"><span class="rate-face">3</span></label>
+            <label class="rate-label"><input type="radio" name="q5" value="4"><span class="rate-face">4</span></label>
+            <label class="rate-label"><input type="radio" name="q5" value="5"><span class="rate-face">5</span></label>
+          </div>
+          <div class="rating-legend">
+            <span>1 — Very negative</span>
+            <span>5 — Very positive</span>
+          </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="q-card">
+          <div class="q-header">
+            <div class="q-num">6</div>
+            <div class="q-text">Do you have any other comments on the proposal?</div>
+          </div>
+          <textarea name="q6" placeholder="Please share any additional thoughts, concerns or suggestions here…"></textarea>
+        </div>
+
+        <!-- Contact details -->
+        <div class="contact-card">
+          <div class="contact-card-title">
+            Your Contact Details
+            <span>(Optional)</span>
+          </div>
+          <div class="contact-grid">
+            <div class="contact-field">
+              <label>First Name</label>
+              <input type="text" name="first_name" placeholder="First name">
+            </div>
+            <div class="contact-field">
+              <label>Last Name</label>
+              <input type="text" name="last_name" placeholder="Last name">
+            </div>
+            <div class="contact-field">
+              <label>Email Address</label>
+              <input type="email" name="email" placeholder="your@email.com">
+            </div>
+            <div class="contact-field">
+              <label>Phone Number</label>
+              <input type="tel" name="phone" placeholder="Optional">
+            </div>
+            <div class="contact-field">
+              <label>Postcode</label>
+              <input type="text" name="postcode" placeholder="e.g. CH60 1AB">
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="submit-bar">
+          <p class="submit-note">Please submit your response by <strong>1 June 2026</strong>.<br>Thank you for taking part in this consultation.</p>
+          <button type="submit" class="btn-submit">Submit Feedback →</button>
+        </div>
+
+      </form>
+
+      <!-- Success message -->
+      <div class="success-msg" id="success-msg" style="margin-top:1.5rem;border-radius:10px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.3);">
+        <h3 style="color:#ffffff;margin-bottom:0.75rem;">Thank you for your feedback!</h3>
+        <p style="color:rgba(255,255,255,0.85);">Your response has been recorded. We will consider all feedback carefully as we develop our proposals for Heswall.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── FOOTER ────────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="footer-brand">
+        <img src="leverhulme-logo.png" alt="Leverhulme" style="height:70px;width:auto;mix-blend-mode:screen;margin-bottom:1rem;" onerror="this.style.display='none'">
+        <p>Leverhulme has been part of the fabric of Wirral life for over 130 years, creating and sustaining environments where people can live happy, healthy and fulfilled lives.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#about">The Site</a></li>
+          <li><a href="#vision">Our Vision</a></li>
+          <li><a href="#features">Key Features</a></li>
+          <li><a href="#leverhulme">About Leverhulme</a></li>
+          <li><a href="#feedback">Have Your Say</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:heswall@leverhulme.com">heswall@leverhulme.com</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Accessibility</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Leverhulme. All rights reserved.</span>
+      <span>New Homes in Heswall — Public Consultation</span>
+    </div>
+  </footer>
+
+  <!-- ── JAVASCRIPT ────────────────────────────────────────────── -->
+  <script>
+    // Sticky header
+    const header = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 60) {
+        header.classList.remove('transparent');
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+        header.classList.add('transparent');
+      }
+    });
+
+    // Mobile menu toggle
+    const toggle = document.getElementById('menu-toggle');
+    const nav = document.getElementById('site-nav');
+    toggle.addEventListener('click', () => {
+      nav.classList.toggle('open');
+    });
+
+    // Form submit
+    document.getElementById('feedback-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      this.style.display = 'none';
+      const msg = document.getElementById('success-msg');
+      msg.style.display = 'block';
+      window.scrollTo({ top: document.getElementById('feedback').offsetTop - 100, behavior: 'smooth' });
+    });
+
+    // Smooth anchor links (close mobile nav)
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('open');
+      });
+    });
+  </script>
+</body>
+</html>
