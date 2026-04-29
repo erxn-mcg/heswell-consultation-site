@@ -331,6 +331,31 @@
     }
     .two-col.reverse { direction: rtl; }
     .two-col.reverse > * { direction: ltr; }
+    .col-image-wrap {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      min-height: 380px;
+      position: relative;
+    }
+    .col-image-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      min-height: 380px;
+    }
+    .col-image-placeholder {
+      min-height: 380px;
+      background: #e6edea;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #4a6a55;
+      font-size: 0.95rem;
+      padding: 2rem;
+    }
     .col-image {
       border-radius: 4px;
       overflow: hidden;
@@ -339,7 +364,33 @@
     .col-image svg { width: 100%; height: 100%; }
 
     /* ─── Welcome Section ─────────────────────────────────────── */
-    .welcome-text { font-size: 1.15rem; max-width: 720px; }
+    .welcome-text { font-size: 1.15rem; }
+    .welcome-two-col { align-items: center; }
+    .welcome-img-wrap {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      min-height: 360px;
+    }
+    .welcome-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      min-height: 360px;
+    }
+    .welcome-img-placeholder {
+      min-height: 360px;
+      background: #d8e8d4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #4a6a55;
+      font-size: 0.95rem;
+      padding: 2rem;
+    }
 
     /* ─── Feature Cards ───────────────────────────────────────── */
     .features-grid {
@@ -1113,6 +1164,7 @@
       .section { padding: 3.5rem 1.25rem; }
       .form-section { padding: 3.5rem 1.25rem; }
       .welcome-text { font-size: 1rem; }
+      .welcome-img-wrap, .welcome-img { min-height: 260px; }
 
       /* Features */
       .feature-card { padding: 1.75rem 1.5rem; }
@@ -1228,16 +1280,27 @@
   <!-- ── WELCOME ───────────────────────────────────────────────── -->
   <section class="section section--white" id="welcome">
     <div class="section__inner">
-      <p class="section-label">Welcome</p>
-      <h2>A New Community for Heswall</h2>
-      <div class="section-divider"></div>
-      <p class="welcome-text">
-        Welcome to our Consultation Website. Our proposals for land at Milner Road will help to meet the local demand for new homes in Heswall. The development will provide a mix of family housing and affordable homes in a highly-accessible, well-connected parkland setting – providing access to new areas of green space for new and existing residents alike.
-      </p>
-      <br>
-      <p class="welcome-text">
-        The development will provide more choice for local people and contribute towards addressing a growing housing shortage. It will create new opportunities for people to stay in and move to Heswall. <strong>We would like to hear your views</strong> – which will inform the planning application to be submitted to Wirral Council.
-      </p>
+      <div class="two-col welcome-two-col">
+        <div class="col-text">
+          <p class="section-label">Welcome</p>
+          <h2>A New Community for Heswall</h2>
+          <div class="section-divider"></div>
+          <p class="welcome-text">
+            Welcome to our Consultation Website. Our proposals for land at Milner Road will help to meet the local demand for new homes in Heswall. The development will provide a mix of family housing and affordable homes in a highly-accessible, well-connected parkland setting – providing access to new areas of green space for new and existing residents alike.
+          </p>
+          <br>
+          <p class="welcome-text">
+            The development will provide more choice for local people and contribute towards addressing a growing housing shortage. It will create new opportunities for people to stay in and move to Heswall. <strong>We would like to hear your views</strong> – which will inform the planning application to be submitted to Wirral Council.
+          </p>
+        </div>
+        <div class="welcome-img-wrap">
+          <img src="welcome-image.jpg" alt="Heswall — aerial view of the site" class="welcome-img"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="welcome-img-placeholder" style="display:none;">
+            <span>Save your image here as<br><strong>welcome-image.jpg</strong></span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1259,29 +1322,11 @@
           <br>
           <a href="#feedback" class="btn btn-primary" style="display:inline-block;margin-top:1rem;">Have Your Say</a>
         </div>
-        <div>
-          <!-- Map placeholder -->
-          <div class="col-image" style="background:#d8e8d4;position:relative;">
-            <svg viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-              <rect fill="#e6edea" width="600" height="450"/>
-              <!-- Roads -->
-              <line x1="0" y1="225" x2="600" y2="225" stroke="#c0cac5" stroke-width="8"/>
-              <line x1="300" y1="0" x2="300" y2="450" stroke="#c0cac5" stroke-width="6"/>
-              <line x1="0" y1="150" x2="600" y2="300" stroke="#c0cac5" stroke-width="4"/>
-              <!-- Site outline -->
-              <polygon points="220,160 380,140 400,280 230,300" fill="#265541" opacity="0.25" stroke="#265541" stroke-width="2"/>
-              <!-- Station marker -->
-              <circle cx="180" cy="320" r="14" fill="#265541"/>
-              <text x="180" y="325" text-anchor="middle" fill="white" font-size="10" font-weight="bold">🚉</text>
-              <text x="180" y="346" text-anchor="middle" fill="#265541" font-size="10" font-weight="bold">Heswall Station</text>
-              <!-- Site label -->
-              <text x="310" y="225" text-anchor="middle" fill="#265541" font-size="12" font-weight="bold">SITE</text>
-              <text x="310" y="242" text-anchor="middle" fill="#265541" font-size="10">Milner Road</text>
-              <!-- Compass -->
-              <circle cx="545" cy="60" r="22" fill="white" stroke="#ccc" stroke-width="1"/>
-              <text x="545" y="66" text-anchor="middle" fill="#265541" font-weight="bold" font-size="14">N</text>
-              <polygon points="545,40 540,60 545,55 550,60" fill="#265541"/>
-            </svg>
+        <div class="col-image-wrap">
+          <img src="site-map.jpg" alt="Site location map — Milner Road, Heswall" class="col-image-img"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="col-image-placeholder" style="display:none;">
+            <span>Save your map image here as<br><strong>site-map.jpg</strong></span>
           </div>
         </div>
       </div>
@@ -1694,7 +1739,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 <a href="https://publicconsultation.uk" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">publicconsultation.uk</a>. All rights reserved.</span>
+      <span>&copy; 2026 PublicConsultation.UK. All rights reserved.</span>
       <span>New Homes in Heswall — Public Consultation</span>
     </div>
   </footer>
