@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en-GB">
 <head>
   <meta charset="UTF-8">
@@ -89,23 +89,31 @@
       justify-content: space-between;
       height: 80px;
     }
+    /* Logo sits in a white band that bleeds to the left header edge */
+    .logo-band {
+      background: #ffffff;
+      height: 80px; /* full header height */
+      display: flex;
+      align-items: center;
+      padding: 0 2rem 0 2rem;
+      margin-left: -2rem; /* bleed to left edge */
+      padding-right: 2.5rem;
+      flex-shrink: 0;
+    }
     .site-logo {
       display: flex;
       align-items: center;
     }
     .site-logo .logo-img {
-      height: 58px;
+      height: 52px;
       width: auto;
-      /* mix-blend-mode: screen removes the black background on dark headers */
-      mix-blend-mode: screen;
-      /* Slight brightness boost so it pops on the transparent hero too */
-      filter: brightness(1.05);
-      transition: opacity 0.3s;
+      object-fit: contain;
+      display: block;
     }
     /* Fallback text shown when image fails to load */
     .site-logo .logo-fallback {
       display: none;
-      color: var(--c-white);
+      color: var(--c-green);
       font-weight: 700;
       font-size: 1.1rem;
       letter-spacing: 3px;
@@ -436,6 +444,19 @@
       object-fit: cover;
       display: block;
     }
+    .photo-label-top, .photo-label-bottom {
+      background: var(--c-green);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.55rem 1rem;
+      text-align: center;
+    }
+    .photo-label-bottom {
+      background: var(--c-yellow);
+    }
     .feature-photo .photo-caption {
       position: absolute;
       bottom: 0; left: 0; right: 0;
@@ -604,6 +625,24 @@
     }
 
     /* ─── About Leverhulme ────────────────────────────────────── */
+    .lev-photo-wrap {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      min-height: 360px;
+      position: relative;
+    }
+    .lev-photo-img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      min-height: 360px;
+    }
+    .lev-photo-placeholder {
+      min-height: 360px;
+      background: #d8e8d4;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; color: #4a6a55; font-size: 0.95rem; padding: 2rem;
+    }
     .lev-logo-box {
       background: var(--c-yellow);
       padding: 2.5rem;
@@ -1025,6 +1064,14 @@
       margin-bottom: 1rem;
     }
     .footer-brand p { font-size: 0.9rem; max-width: 340px; line-height: 1.7; }
+    .footer-logo-rect {
+      display: inline-flex;
+      align-items: center;
+      background: #ffffff;
+      border-radius: 6px;
+      padding: 0.6rem 1.2rem;
+      margin-bottom: 1.2rem;
+    }
     .footer-col h4 {
       color: var(--c-white);
       font-size: 0.8rem;
@@ -1196,7 +1243,8 @@
 
     /* ─── Responsive — Small mobile (≤380px) ─────────────────── */
     @media (max-width: 380px) {
-      .site-logo .logo-img { height: 44px; }
+      .logo-band { padding: 0 1.2rem 0 1.5rem; margin-left: -1.5rem; height: 70px; }
+      .logo-band .logo-img { height: 42px; }
       h2 { font-size: 1.5rem !important; }
       .feature-card { padding: 1.25rem 1rem; }
       .form-box { padding: 1.25rem 1rem; }
@@ -1208,14 +1256,16 @@
   <!-- ── HEADER ───────────────────────────────────────────────── -->
   <header class="site-header transparent" id="site-header">
     <div class="site-header__inner">
-      <div class="site-logo">
-        <img
-          class="logo-img"
-          src="leverhulme-logo.png"
-          alt="Leverhulme"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
-        >
-        <span class="logo-fallback">Leverhulme</span>
+      <div class="logo-band">
+        <div class="site-logo">
+          <img
+            class="logo-img"
+            src="leverhulme-logo.png"
+            alt="Leverhulme"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
+          >
+          <span class="logo-fallback">Leverhulme</span>
+        </div>
       </div>
       <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
         <span></span><span></span><span></span>
@@ -1292,6 +1342,7 @@
           <p class="welcome-text">
             The development will provide more choice for local people and contribute towards addressing a growing housing shortage. It will create new opportunities for people to stay in and move to Heswall. <strong>We would like to hear your views</strong> – which will inform the planning application to be submitted to Wirral Council.
           </p>
+          <a href="#feedback" class="btn btn-primary" style="display:inline-block;margin-top:1.5rem;">Have Your Say</a>
         </div>
         <div class="welcome-img-wrap">
           <img src="welcome-image.jpg" alt="Heswall — aerial view of the site" class="welcome-img"
@@ -1426,26 +1477,32 @@
 
       <!-- Photo strip between rows -->
       <div class="feature-photos">
+
+        <!-- Left: sustainable design sketch — sits between feature 01 and 02 -->
         <div class="feature-photo">
-          <img src="feature-photo-1.jpg"
-               alt="Housing development illustration"
-               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-          <div class="photo-placeholder" style="display:none;">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <span>Save as <strong>feature-photo-1.jpg</strong></span>
-          </div>
-          <div class="photo-caption">Housing Mix &amp; Design</div>
-        </div>
-        <div class="feature-photo">
+          <div class="photo-label-top">01 — A Diverse Housing Mix</div>
           <img src="feature-photo-2.jpg"
-               alt="Sustainable homes illustration"
+               alt="Sustainable design sketch"
                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
           <div class="photo-placeholder" style="display:none;">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             <span>Save as <strong>feature-photo-2.jpg</strong></span>
           </div>
-          <div class="photo-caption">Sustainable Design</div>
+          <div class="photo-label-bottom">02 — Future-Proofed Homes</div>
         </div>
+
+        <!-- Right: field / flowers photo — sits before feature 03 -->
+        <div class="feature-photo">
+          <div class="photo-label-top">03 — Greenery, Space &amp; Biodiversity</div>
+          <img src="feature-photo-3.jpg"
+               alt="Green field with wildflowers"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="photo-placeholder" style="display:none;">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Save as <strong>feature-photo-3.jpg</strong></span>
+          </div>
+        </div>
+
       </div>
 
       <!-- Row 2: features 03 & 04 -->
@@ -1487,10 +1544,12 @@
             Today's Leverhulme encompasses diverse places hosting farms, homes, commercial operations, communities and more. Leverhulme aims to create and sustain environments where people can live happy, healthy and fulfilled lives.
           </p>
         </div>
-        <div class="lev-logo-box">
-          <div class="lev-logo-text">
-            Leverhulme
-            <span>Est. Wirral · Est. 1888</span>
+        <div class="lev-photo-wrap">
+          <img src="feature-photo-1.jpg" alt="New homes — Heswall development"
+               class="lev-photo-img"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="lev-photo-placeholder" style="display:none;">
+            <span>Save your houses photo as<br><strong>feature-photo-1.jpg</strong></span>
           </div>
         </div>
       </div>
@@ -1512,7 +1571,7 @@
           <path d="M10 2L3 5v5c0 4.4 3 8.5 7 9.5 4-1 7-5.1 7-9.5V5l-7-3z" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" stroke-linejoin="round"/>
           <path d="M7 10l2 2 4-4" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <span><strong>Privacy:</strong> This consultation is managed by Leverhulme. Personal data is used solely for this consultation and held securely under UK GDPR. It will not be shared with third parties without your consent.</span>
+        <span><strong>Privacy:</strong> Personal data is used solely for this consultation and held securely under UK GDPR. It will not be shared with third parties without your consent.</span>
       </div>
 
       <!-- Connected to Google Form: Heswall Consultation -->
@@ -1694,7 +1753,9 @@
   <footer class="site-footer">
     <div class="site-footer__inner">
       <div class="footer-brand">
-        <img src="leverhulme-logo.png" alt="Leverhulme" style="height:70px;width:auto;mix-blend-mode:screen;margin-bottom:1rem;" onerror="this.style.display='none'">
+        <div class="footer-logo-rect">
+          <img src="leverhulme-logo.png" alt="Leverhulme" style="height:60px;width:auto;" onerror="this.style.display='none'">
+        </div>
         <p>Leverhulme has been part of the fabric of Wirral life for over 130 years, creating and sustaining environments where people can live happy, healthy and fulfilled lives.</p>
       </div>
       <div class="footer-col">
