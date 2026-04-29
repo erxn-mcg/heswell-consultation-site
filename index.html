@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>New Homes in Heswall – Leverhulme Consultation</title>
+  <!-- PDF.js — renders the masterplan PDF as a page-by-page flipbook -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@300;400;600&display=swap" rel="stylesheet">
@@ -68,10 +70,16 @@
       transition: background 0.4s ease, box-shadow 0.4s ease;
       padding: 0 2rem;
     }
-    .site-header.transparent { background: transparent; }
+    .site-header.transparent {
+      background: linear-gradient(to bottom, rgba(9,43,50,0.55) 0%, rgba(9,43,50,0.0) 100%);
+      backdrop-filter: blur(6px) saturate(1.2);
+      -webkit-backdrop-filter: blur(6px) saturate(1.2);
+    }
     .site-header.scrolled {
       background: var(--c-green);
       box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
     }
     .site-header__inner {
       max-width: 1280px;
@@ -178,6 +186,16 @@
       margin: 0 auto;
       padding: 0 2rem;
       color: var(--c-white);
+    }
+    .hero-glass {
+      display: inline-block;
+      background: rgba(9, 43, 50, 0.38);
+      backdrop-filter: blur(10px) saturate(1.3);
+      -webkit-backdrop-filter: blur(10px) saturate(1.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 2.5rem 3rem 2.5rem;
+      max-width: 760px;
     }
     .hero-eyebrow {
       font-size: 0.8rem;
@@ -395,14 +413,143 @@
       .feature-photos { grid-template-columns: 1fr; gap: 1rem; }
     }
 
-    /* ─── Vision section image placeholder ───────────────────── */
-    .masterplan-img {
-      width: 100%;
-      aspect-ratio: 16/9;
-      border-radius: 4px;
-      overflow: hidden;
+    /* ─── Masterplan flipbook ─────────────────────────────────── */
+    .flipbook-wrap {
       margin-top: 3rem;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 12px 50px rgba(0,0,0,0.35);
+      background: #1a3a2a;
+    }
+    .flipbook-viewer {
+      width: 100%;
+      position: relative;
+      background: #1a3a2a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 420px;
+    }
+    #pdf-canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 75vh;
+      object-fit: contain;
+    }
+    /* Prev / Next hit areas */
+    .flip-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.12);
+      border: none;
+      color: white;
+      width: 48px;
+      height: 64px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+    .flip-btn:hover { background: rgba(255,255,255,0.25); }
+    .flip-btn:disabled { opacity: 0.2; cursor: default; }
+    .flip-btn--prev { left: 1rem; }
+    .flip-btn--next { right: 1rem; }
+    /* Toolbar */
+    .flipbook-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.25rem;
+      background: rgba(0,0,0,0.3);
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .flipbook-bar .page-info {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.7);
+      font-family: var(--f-body);
+      white-space: nowrap;
+    }
+    .flipbook-bar .page-info strong { color: white; }
+    .flipbook-bar .bar-label {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .flipbook-bar .bar-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .zoom-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      border-radius: 4px;
+      width: 30px;
+      height: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .zoom-btn:hover { background: rgba(255,255,255,0.2); }
+    /* Loading / error states */
+    .flipbook-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+      font-family: var(--f-body);
+    }
+    .flipbook-loading .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid rgba(255,255,255,0.15);
+      border-top-color: rgba(255,255,255,0.7);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .flipbook-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 2rem;
+      font-family: var(--f-body);
+    }
+    .flipbook-placeholder svg { opacity: 0.35; margin-bottom: 0.5rem; }
+    .flipbook-placeholder h4 { color: rgba(255,255,255,0.8); font-size: 1rem; margin: 0; }
+    .flipbook-placeholder p  { font-size: 0.82rem; max-width: 340px; line-height: 1.6; margin: 0; }
+    .flipbook-placeholder code {
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      padding: 0.15rem 0.5rem;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.9);
+    }
+    @media (max-width: 600px) {
+      .flip-btn { width: 36px; height: 50px; }
+      .flip-btn--prev { left: 0.4rem; }
+      .flip-btn--next { right: 0.4rem; }
     }
 
     /* ─── About Leverhulme ────────────────────────────────────── */
@@ -936,6 +1083,7 @@
       /* Hero */
       .hero { padding-bottom: 6rem; }
       .hero-content { padding: 0 1.5rem; }
+      .hero-glass { padding: 1.75rem 1.5rem; border-radius: 12px; }
 
       /* Columns — image on mobile shows below text */
       .two-col.reverse .col-text { order: -1; }
@@ -1036,17 +1184,19 @@
   <section class="hero" id="home">
     <div class="hero-bg"></div>
     <div class="hero-content">
-      <p class="hero-eyebrow">Leverhulme — Heswall Consultation</p>
-      <h1>
-        Have Your Say<br>
-        <span>New Homes in Heswall</span>
-      </h1>
-      <p class="hero-desc">
-        Our proposals for land at Milner Road will help meet the local demand for new homes in Heswall — providing a mix of family and affordable housing in a well-connected parkland setting.
-      </p>
-      <div class="hero-btns">
-        <a href="#feedback" class="btn btn-primary">Give Your Feedback</a>
-        <a href="#about" class="btn btn-outline">Learn More</a>
+      <div class="hero-glass">
+        <p class="hero-eyebrow">Leverhulme — Heswall Consultation</p>
+        <h1>
+          Have Your Say<br>
+          <span>New Homes in Heswall</span>
+        </h1>
+        <p class="hero-desc">
+          Our proposals for land at Milner Road will help meet the local demand for new homes in Heswall — providing a mix of family and affordable housing in a well-connected parkland setting.
+        </p>
+        <div class="hero-btns">
+          <a href="#feedback" class="btn btn-primary">Give Your Feedback</a>
+          <a href="#about" class="btn btn-outline">Learn More</a>
+        </div>
       </div>
     </div>
     <div class="scroll-indicator">
@@ -1147,53 +1297,56 @@
       <p style="max-width:760px;font-size:1.1rem;color:rgba(255,255,255,0.88);">
         Our vision is to provide high quality sustainable new homes and integrate an attractive, thriving, multi-generational community into Heswall. We will seek to achieve this by blending a range of energy-efficient homes with accessible green space, safe active travel routes and strong connections to the wider community and countryside.
       </p>
-      <!-- Masterplan placeholder -->
-      <div class="masterplan-img" style="background:#2f6a52;">
-        <svg viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-          <rect fill="#2f6a52" width="1200" height="675"/>
-          <!-- Green spaces -->
-          <ellipse cx="200" cy="400" rx="150" ry="100" fill="#3a7a60" opacity="0.6"/>
-          <ellipse cx="1000" cy="300" rx="120" ry="80" fill="#3a7a60" opacity="0.6"/>
-          <rect x="400" y="100" width="400" height="475" rx="20" fill="#346050" opacity="0.4"/>
-          <!-- Roads grid -->
-          <line x1="400" y1="100" x2="400" y2="575" stroke="#eceee6" stroke-width="10" opacity="0.6"/>
-          <line x1="800" y1="100" x2="800" y2="575" stroke="#eceee6" stroke-width="10" opacity="0.6"/>
-          <line x1="400" y1="337" x2="800" y2="337" stroke="#eceee6" stroke-width="8" opacity="0.6"/>
-          <line x1="400" y1="200" x2="800" y2="200" stroke="#eceee6" stroke-width="5" opacity="0.4"/>
-          <line x1="400" y1="475" x2="800" y2="475" stroke="#eceee6" stroke-width="5" opacity="0.4"/>
-          <!-- Housing blocks -->
-          <rect x="420" y="120" width="80" height="60" rx="4" fill="#55263A" opacity="0.8"/>
-          <rect x="520" y="120" width="80" height="60" rx="4" fill="#55263A" opacity="0.8"/>
-          <rect x="620" y="120" width="80" height="60" rx="4" fill="#55263A" opacity="0.8"/>
-          <rect x="720" y="120" width="60" height="60" rx="4" fill="#55263A" opacity="0.8"/>
-          <rect x="420" y="220" width="80" height="95" rx="4" fill="#6b3049" opacity="0.8"/>
-          <rect x="520" y="220" width="80" height="95" rx="4" fill="#6b3049" opacity="0.8"/>
-          <rect x="620" y="220" width="80" height="95" rx="4" fill="#6b3049" opacity="0.8"/>
-          <rect x="720" y="220" width="60" height="95" rx="4" fill="#6b3049" opacity="0.8"/>
-          <rect x="420" y="355" width="80" height="95" rx="4" fill="#6b3049" opacity="0.8"/>
-          <rect x="520" y="355" width="80" height="95" rx="4" fill="#6b3049" opacity="0.8"/>
-          <rect x="620" y="355" width="80" height="95" rx="4" fill="#55263A" opacity="0.8"/>
-          <rect x="720" y="355" width="60" height="95" rx="4" fill="#55263A" opacity="0.8"/>
-          <rect x="420" y="490" width="80" height="70" rx="4" fill="#6b3049" opacity="0.8"/>
-          <rect x="520" y="490" width="80" height="70" rx="4" fill="#6b3049" opacity="0.8"/>
-          <rect x="620" y="490" width="80" height="70" rx="4" fill="#6b3049" opacity="0.8"/>
-          <rect x="720" y="490" width="60" height="70" rx="4" fill="#55263A" opacity="0.8"/>
-          <!-- Cycleway -->
-          <path d="M 100 337 Q 250 337 400 337 Q 600 337 800 337 Q 1000 300 1100 250" stroke="#7a3a55" stroke-width="4" fill="none" stroke-dasharray="10,5"/>
-          <!-- Label -->
-          <text x="600" y="650" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="14" font-family="sans-serif">Draft Masterplan — Milner Road, Heswall (Subject to Change)</text>
-          <!-- Legend -->
-          <rect x="30" y="30" width="14" height="14" fill="#55263A"/>
-          <text x="50" y="42" fill="white" font-size="12" font-family="sans-serif">Market Housing</text>
-          <rect x="30" y="55" width="14" height="14" fill="#6b3049"/>
-          <text x="50" y="67" fill="white" font-size="12" font-family="sans-serif">Affordable Housing</text>
-          <line x1="30" y1="82" x2="44" y2="82" stroke="#7a3a55" stroke-width="3" stroke-dasharray="4,2"/>
-          <text x="50" y="87" fill="white" font-size="12" font-family="sans-serif">Cycleway</text>
-          <rect x="30" y="97" width="14" height="14" fill="#3a7a60" opacity="0.8"/>
-          <text x="50" y="110" fill="white" font-size="12" font-family="sans-serif">Green Space</text>
-        </svg>
-      </div>
-      <p style="color:rgba(255,255,255,0.5);font-size:0.8rem;margin-top:0.75rem;text-align:center;">
+      <!-- ── Masterplan flipbook ── -->
+      <!-- Save your masterplan PDF as masterplan.pdf in the same folder as this file -->
+      <div class="flipbook-wrap">
+
+        <!-- Toolbar -->
+        <div class="flipbook-bar">
+          <span class="bar-label">Draft Masterplan — Milner Road, Heswall</span>
+          <div class="bar-right">
+            <span class="page-info" id="page-info" style="display:none;">
+              Page <strong id="page-num">1</strong> of <strong id="page-count">—</strong>
+            </span>
+            <button class="zoom-btn" id="zoom-out" title="Zoom out" style="display:none;">−</button>
+            <button class="zoom-btn" id="zoom-in"  title="Zoom in"  style="display:none;">+</button>
+          </div>
+        </div>
+
+        <!-- Canvas area -->
+        <div class="flipbook-viewer" id="flipbook-viewer">
+
+          <!-- Loading spinner (shown while PDF loads) -->
+          <div class="flipbook-loading" id="pdf-loading">
+            <div class="spinner"></div>
+            <span>Loading masterplan…</span>
+          </div>
+
+          <!-- Placeholder shown when masterplan.pdf is not found -->
+          <div class="flipbook-placeholder" id="pdf-placeholder" style="display:none;">
+            <svg width="52" height="52" viewBox="0 0 24 24" fill="none">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M14 2v6h6M9 13h6M9 17h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <h4>Add your masterplan PDF</h4>
+            <p>Save your masterplan as <code>masterplan.pdf</code> in the same folder as this HTML file and it will appear here as a page-by-page flipbook.</p>
+          </div>
+
+          <!-- The PDF renders here -->
+          <canvas id="pdf-canvas" style="display:none;"></canvas>
+
+          <!-- Prev / Next arrows -->
+          <button class="flip-btn flip-btn--prev" id="btn-prev" disabled style="display:none;" aria-label="Previous page">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="flip-btn flip-btn--next" id="btn-next" disabled style="display:none;" aria-label="Next page">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+
+        </div><!-- /flipbook-viewer -->
+      </div><!-- /flipbook-wrap -->
+
+      <p style="color:rgba(255,255,255,0.45);font-size:0.78rem;margin-top:0.75rem;text-align:center;">
         Illustrative masterplan — for indicative purposes only, subject to change.
       </p>
     </div>
@@ -1534,14 +1687,14 @@
       <div class="footer-col">
         <h4>Contact</h4>
         <ul>
-          <li><a href="mailto:heswall@leverhulme.com">heswall@leverhulme.com</a></li>
+          <li><a href="mailto:heswall@publicconsultation.uk">heswall@publicconsultation.uk</a></li>
           <li><a href="#">Privacy Policy</a></li>
           <li><a href="#">Accessibility</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 Leverhulme. All rights reserved.</span>
+      <span>&copy; 2026 <a href="https://publicconsultation.uk" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">publicconsultation.uk</a>. All rights reserved.</span>
       <span>New Homes in Heswall — Public Consultation</span>
     </div>
   </footer>
@@ -1582,6 +1735,86 @@
         nav.classList.remove('open');
       });
     });
+
+    // ── PDF.js Masterplan Flipbook ──────────────────────────────
+    if (typeof pdfjsLib !== 'undefined') {
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+      let pdfDoc = null, currentPage = 1, scale = 1.5, rendering = false;
+      const canvas      = document.getElementById('pdf-canvas');
+      const ctx         = canvas.getContext('2d');
+      const loading     = document.getElementById('pdf-loading');
+      const placeholder = document.getElementById('pdf-placeholder');
+      const pageNum     = document.getElementById('page-num');
+      const pageCount   = document.getElementById('page-count');
+      const pageInfo    = document.getElementById('page-info');
+      const btnPrev     = document.getElementById('btn-prev');
+      const btnNext     = document.getElementById('btn-next');
+      const zoomIn      = document.getElementById('zoom-in');
+      const zoomOut     = document.getElementById('zoom-out');
+      const viewer      = document.getElementById('flipbook-viewer');
+
+      function renderPage(n) {
+        if (rendering) return;
+        rendering = true;
+        pdfDoc.getPage(n).then(page => {
+          // Fit canvas to viewer width
+          const viewerWidth = viewer.clientWidth || 800;
+          const baseVp = page.getViewport({ scale: 1 });
+          const fitScale = Math.min(scale, (viewerWidth - 32) / baseVp.width);
+          const vp = page.getViewport({ scale: fitScale * scale / 1.5 });
+          canvas.width  = vp.width;
+          canvas.height = vp.height;
+          page.render({ canvasContext: ctx, viewport: vp }).promise.then(() => {
+            rendering = false;
+            pageNum.textContent  = n;
+            btnPrev.disabled = n <= 1;
+            btnNext.disabled = n >= pdfDoc.numPages;
+          });
+        });
+      }
+
+      pdfjsLib.getDocument('masterplan.pdf').promise.then(pdf => {
+        pdfDoc = pdf;
+        loading.style.display      = 'none';
+        canvas.style.display       = 'block';
+        btnPrev.style.display      = 'flex';
+        btnNext.style.display      = 'flex';
+        pageInfo.style.display     = 'inline-flex';
+        zoomIn.style.display       = 'inline-flex';
+        zoomOut.style.display      = 'inline-flex';
+        pageCount.textContent      = pdf.numPages;
+        renderPage(1);
+      }).catch(() => {
+        loading.style.display      = 'none';
+        placeholder.style.display  = 'flex';
+      });
+
+      btnPrev.addEventListener('click', () => {
+        if (currentPage > 1) renderPage(--currentPage);
+      });
+      btnNext.addEventListener('click', () => {
+        if (pdfDoc && currentPage < pdfDoc.numPages) renderPage(++currentPage);
+      });
+      zoomIn.addEventListener('click', () => {
+        scale = Math.min(scale + 0.25, 3);
+        renderPage(currentPage);
+      });
+      zoomOut.addEventListener('click', () => {
+        scale = Math.max(scale - 0.25, 0.5);
+        renderPage(currentPage);
+      });
+
+      // Re-render on window resize to keep it fitting the viewer
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          if (pdfDoc) renderPage(currentPage);
+        }, 200);
+      });
+    }
   </script>
 </body>
 </html>
