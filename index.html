@@ -1717,7 +1717,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 PublicConsultation.UK | All rights reserved.</span>
+      <span>&copy; 2026 PublicConsultation.UK. All rights reserved.</span>
       <span>New Homes in Heswall — Public Consultation</span>
     </div>
   </footer>
@@ -1743,13 +1743,17 @@
       nav.classList.toggle('open');
     });
 
-    // Form submit
-    document.getElementById('feedback-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      this.style.display = 'none';
-      const msg = document.getElementById('success-msg');
-      msg.style.display = 'block';
-      window.scrollTo({ top: document.getElementById('feedback').offsetTop - 100, behavior: 'smooth' });
+    // Form submit — let the form POST to the hidden iframe (Google Forms),
+    // then show the thank-you message after a short delay.
+    document.getElementById('feedback-form').addEventListener('submit', function() {
+      const form = this;
+      setTimeout(function() {
+        form.style.display = 'none';
+        const msg = document.getElementById('success-msg');
+        msg.style.display = 'block';
+        window.scrollTo({ top: document.getElementById('feedback').offsetTop - 100, behavior: 'smooth' });
+      }, 800);
+      // Do NOT call e.preventDefault() — the form must actually submit to Google
     });
 
     // Smooth anchor links (close mobile nav)
